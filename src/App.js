@@ -37,29 +37,52 @@ function Todos() {
       id: uuidv4(),
       text: "Complete assignment",
       completed: false
+    },
+    {
+      id: uuidv4(),
+      text: "Test assignment",
+      completed: false
     }
   ]);
 
+  const onCreate = event => {
+    event.preventDefault();
+    console.log('Todo created')
+  }
+
   return (
     <main>
-      Good luck!
       {/** Show your "Create todo" form here */}
-      <ul>{/** Ouput some todos here */}</ul>
+      <CreateTodo onCreate={onCreate}/>
+      <ul>
+        {/** Ouput some todos here */}
+        {todos.map(todo => <Todo key={todo.id} id={todo.id} text={todo.text} completed={todo.completed}></Todo>)}
+        
+      </ul>
     </main>
   );
 }
 
-function Todo({ id, text, completed, onRemove, onToggleComplete }) {
-  return <li>{/** Implement individual todo */}</li>;
+function Todo({id, text, completed, onRemove, onToggleComplete }) {
+  return <li>
+    {/** Implement individual todo */}
+    {text}
+    </li>;
 }
 
 function CreateTodo({ onCreate }) {
-  return <form onSubmit={onCreate}>{/** Implement the form */}</form>;
+  return <form onSubmit={onCreate}>
+    {/** Implement the form */}
+    <input type="text" placeholder="Create todo" />
+    <input type="submit" value="Add" />
+    
+    </form>;
 }
 
 export default function App() {
   return (
     <div className="App">
+      <h1>Todo List</h1>
       <Todos />
     </div>
   );
