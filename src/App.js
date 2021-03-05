@@ -72,9 +72,9 @@ function Todos() {
     event.preventDefault();
   };
 
-  const onRemove = event => {
+  const onRemove = (event, id) => {
     const theState = [...todos];
-    const theEntryIndex = theState.findIndex(x => x.id === event.target.id)
+    const theEntryIndex = theState.findIndex(x => x.id === id)
 
     theState.splice(theEntryIndex, 1)
     setTodos(theState)
@@ -113,7 +113,7 @@ function Todo({id, text, completed, onRemove, onToggleComplete }) {
     {/** Implement individual todo */}
     {text}
     <input id={id} type="checkbox" checked={completed} onChange={onToggleComplete}/>
-    <input type="submit" value="Remove" onClick={onRemove}/>
+    <input type="submit" value="Remove" onClick={(event)=>onRemove(event, id)}/>
     </li>;
 }
 
