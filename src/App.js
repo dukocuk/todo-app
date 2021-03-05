@@ -72,14 +72,23 @@ function Todos() {
     event.preventDefault();
   };
 
+  const onRemove = event => {
+    const theState = [...todos];
+    const theEntryIndex = theState.findIndex(x => x.id === event.target.id)
+
+    theState.splice(theEntryIndex, 1)
+    setTodos(theState)
+    event.preventDefault();
+  }
+
   const onChange = event => {
     setText(event.target.value);
   };
 
   const onToggleComplete = (event) => {
     const theState = [...todos];
-    const theEntry = todos.find(x => x.id === event.target.id)
-    const theEntryIndex = todos.findIndex(x => x.id === event.target.id)
+    const theEntry = theState.find(x => x.id === event.target.id)
+    const theEntryIndex = theState.findIndex(x => x.id === event.target.id)
     
     theEntry.completed = !theEntry.completed
     theState[theEntryIndex] = theEntry
@@ -92,7 +101,7 @@ function Todos() {
       <CreateTodo onCreate={onCreate} onChange={onChange} text={text}/>
       <ul>
         {/** Ouput some todos here */}
-        {todos.map(todo => <Todo key={todo.id} id={todo.id} text={todo.text} completed={todo.completed} onToggleComplete={onToggleComplete}></Todo>)}
+        {todos.map(todo => <Todo key={todo.id} id={todo.id} text={todo.text} completed={todo.completed} onToggleComplete={onToggleComplete} onRemove={onRemove}></Todo>)}
         
       </ul>
     </main>
@@ -104,7 +113,7 @@ function Todo({id, text, completed, onRemove, onToggleComplete }) {
     {/** Implement individual todo */}
     {text}
     <input id={id} type="checkbox" checked={completed} onChange={onToggleComplete}/>
-    <input type="submit" value="Remove" onSubmit={onRemove}/>
+    <input type="submit" value="Remove" onClick={onRemove}/>
     </li>;
 }
 
