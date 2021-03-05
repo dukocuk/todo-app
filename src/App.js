@@ -40,23 +40,59 @@ function Todos() {
     },
     {
       id: uuidv4(),
-      text: "Test assignment",
+      text: "Go for a walk",
+      completed: false
+    },
+    {
+      id: uuidv4(),
+      text: "Get the job",
       completed: false
     }
   ]);
+  const [text, setText] = React.useState("");
+
 
   const onCreate = event => {
+    const trimmedText = text.split(" ").join("")
+    if (trimmedText === "") {
+      event.preventDefault();
+      return
+    }
+
+    setTodos(prevState => ([
+      {
+        id: uuidv4(),
+        text: text,
+        completed: false
+      },
+      ...prevState
+    ]
+    ));
+    setText("")
     event.preventDefault();
-    console.log('Todo created')
-  }
+  };
+
+  const onChange = event => {
+    setText(event.target.value);
+  };
+
+  const onToggleComplete = (event) => {
+    const theState = [...todos];
+    const theEntry = todos.find(x => x.id === event.target.id)
+    const theEntryIndex = todos.findIndex(x => x.id === event.target.id)
+    
+    theEntry.completed = !theEntry.completed
+    theState[theEntryIndex] = theEntry
+    setTodos(theState)
+  };
 
   return (
     <main>
       {/** Show your "Create todo" form here */}
-      <CreateTodo onCreate={onCreate}/>
+      <CreateTodo onCreate={onCreate} onChange={onChange} text={text}/>
       <ul>
         {/** Ouput some todos here */}
-        {todos.map(todo => <Todo key={todo.id} id={todo.id} text={todo.text} completed={todo.completed}></Todo>)}
+        {todos.map(todo => <Todo key={todo.id} id={todo.id} text={todo.text} completed={todo.completed} onToggleComplete={onToggleComplete}></Todo>)}
         
       </ul>
     </main>
@@ -67,15 +103,16 @@ function Todo({id, text, completed, onRemove, onToggleComplete }) {
   return <li>
     {/** Implement individual todo */}
     {text}
+    <input id={id} type="checkbox" checked={completed} onChange={onToggleComplete}/>
+    <input type="submit" value="Remove" onSubmit={onRemove}/>
     </li>;
 }
 
-function CreateTodo({ onCreate }) {
+function CreateTodo({ onCreate, onChange, text }) {
   return <form onSubmit={onCreate}>
     {/** Implement the form */}
-    <input type="text" placeholder="Create todo" />
-    <input type="submit" value="Add" />
-    
+    <input type="text" value={text} onChange={onChange} placeholder="Create todo" />
+    <input type="submit" value="Add" onSubmit={onCreate}/>
     </form>;
 }
 
