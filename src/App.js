@@ -113,7 +113,7 @@ function Todo({id, text, completed, onRemove, onToggleComplete }) {
     {/** Implement individual todo */}
     {text}
     <input id={id} type="checkbox" checked={completed} onChange={onToggleComplete}/>
-    <input type="submit" value="Remove" onClick={(event)=>onRemove(event, id)}/>
+    <button type="button" onClick={(event)=>onRemove(event, id)}>Remove</button>
     </li>;
 }
 
