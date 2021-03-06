@@ -34,11 +34,6 @@ import styled from '@emotion/styled'
 /**
  * Styles for Todo list
  */
-const MainDiv = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-})
 
 const Div = styled.div({
   display: 'flex',
@@ -51,6 +46,23 @@ const Div = styled.div({
   border: 'solid 2px',
 })
 
+const Row = styled.div(
+  {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center'
+  },
+  props => ({
+  justifyContent: props.jc
+  })
+)
+
+const Column = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+})
+
 const Header = styled.header({
   fontFamily: 'Arial',
   padding: 10,
@@ -61,7 +73,7 @@ const Header = styled.header({
 
 const Button = styled.button(
   props => ({
-    backgroundColor: props.bg,
+    background: props.bg
   }),
   {
     color: 'black',
@@ -83,7 +95,7 @@ const Input = styled.input({
 })
 
 const List = styled.li({
-  listStyleType: 'none'
+  listStyleType: 'none',
 })
 
 function Todos() {
@@ -165,28 +177,36 @@ function Todos() {
 
 function Todo({id, text, completed, onRemove, onToggleComplete }) {
   return <List>
-    {/** Implement individual todo */}
-    {text}
-    <input id={id} type="checkbox" checked={completed} onChange={onToggleComplete}/>
-    <Button type="button" onClick={(event)=>onRemove(event, id)} bg='crimson'>Remove</Button>
-    </List>;
+          <Row jc='flex-end'>
+            <Column>
+              {text}
+            </Column>
+            <Column>
+              <Row jc='center'>
+                <input id={id} type="checkbox" checked={completed} onChange={onToggleComplete}/>
+                <Button type="button" onClick={(event)=>onRemove(event, id)} bg='#d9534f'>Remove</Button>
+              </Row>
+            </Column>
+          </Row>
+        </List>;
 }
 
 function CreateTodo({ onCreate, onChange, text }) {
   return <form onSubmit={onCreate}>
     {/** Implement the form */}
+    
     <Input type="text" value={text} onChange={onChange} placeholder="Create todo"/>
-    <Button type="submit" onSubmit={onCreate} bg='lightblue'>Add</Button>
+    <Button type="submit" onSubmit={onCreate} bg='#5cb85c'>Add</Button>
     </form>;
 }
 
 export default function App() {
   return (
-    <MainDiv>
+    <Row jc='center'>
       <Div>
-      <Header>Todo List</Header>
-      <Todos />
+        <Header>Todo List</Header>
+        <Todos />
       </Div>
-    </MainDiv>
+    </Row>
   );
 }
