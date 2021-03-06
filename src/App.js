@@ -31,9 +31,7 @@ import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import styled from '@emotion/styled'
 
-/**
- * Styles for Todo list
- */
+// Styles for Todo list
 
 const Div = styled.div({
   display: 'flex',
@@ -98,6 +96,9 @@ const List = styled.li({
   listStyleType: 'none',
 })
 
+
+/**Code*/
+
 function Todos() {
   const [todos, setTodos] = React.useState([
     {
@@ -117,6 +118,17 @@ function Todos() {
     }
   ]);
   const [text, setText] = React.useState("");
+
+  React.useEffect(() => {
+    const parsedTodos = JSON.parse(localStorage.getItem("todos"))
+    console.log(typeof parsedTodos)
+    console.log(parsedTodos[0])
+    setTodos(parsedTodos)
+  }, [])
+
+  React.useEffect( () => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos])
 
 
   const onCreate = event => {
