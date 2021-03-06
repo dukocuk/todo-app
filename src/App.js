@@ -27,9 +27,64 @@
  * showcase your ability to work with given parameters.
  *
  */
-
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
+import styled from '@emotion/styled'
+
+/**
+ * Styles for Todo list
+ */
+const MainDiv = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+})
+
+const Div = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  fontFamily: 'sans-serif',
+  textAlign: 'center',
+  maxWidth: '500px',
+  background: '#b2d5ff',
+  border: 'solid 2px',
+})
+
+const Header = styled.header({
+  fontFamily: 'Arial',
+  padding: 10,
+  fontSize: 26,
+  background: '#007ed3',
+  color: 'white',
+})
+
+const Button = styled.button(
+  props => ({
+    backgroundColor: props.bg,
+  }),
+  {
+    color: 'black',
+    '&:hover': {
+      color: 'white'
+    }
+  }
+)
+
+const Input = styled.input({
+  outline: 0,
+  padding: 0.6,
+  border: '1px solid rgba(34, 36, 38, 0.15)',
+  borderRadius: 3,
+  minWidth: 180,
+  '&:hover,&:focus': {
+    borderColor: '#85b7d9'
+  },
+})
+
+const List = styled.li({
+  listStyleType: 'none'
+})
 
 function Todos() {
   const [todos, setTodos] = React.useState([
@@ -109,27 +164,29 @@ function Todos() {
 }
 
 function Todo({id, text, completed, onRemove, onToggleComplete }) {
-  return <li>
+  return <List>
     {/** Implement individual todo */}
     {text}
     <input id={id} type="checkbox" checked={completed} onChange={onToggleComplete}/>
-    <button type="button" onClick={(event)=>onRemove(event, id)}>Remove</button>
-    </li>;
+    <Button type="button" onClick={(event)=>onRemove(event, id)} bg='crimson'>Remove</Button>
+    </List>;
 }
 
 function CreateTodo({ onCreate, onChange, text }) {
   return <form onSubmit={onCreate}>
     {/** Implement the form */}
-    <input type="text" value={text} onChange={onChange} placeholder="Create todo" />
-    <input type="submit" value="Add" onSubmit={onCreate}/>
+    <Input type="text" value={text} onChange={onChange} placeholder="Create todo"/>
+    <Button type="submit" onSubmit={onCreate} bg='lightblue'>Add</Button>
     </form>;
 }
 
 export default function App() {
   return (
-    <div className="App">
-      <h1>Todo List</h1>
+    <MainDiv>
+      <Div>
+      <Header>Todo List</Header>
       <Todos />
-    </div>
+      </Div>
+    </MainDiv>
   );
 }
