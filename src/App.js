@@ -29,73 +29,72 @@
  */
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import styled from '@emotion/styled'
+import styled from "@emotion/styled";
 
 // Styles for Todo list
 
 const Div = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  fontFamily: 'sans-serif',
-  textAlign: 'center',
-  maxWidth: '500px',
-  background: '#b2d5ff',
-  border: 'solid 2px',
-})
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  fontFamily: "sans-serif",
+  textAlign: "center",
+  maxWidth: "500px",
+  background: "#b2d5ff",
+  border: "solid 2px"
+});
 
 const Row = styled.div(
   {
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center'
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
   },
-  props => ({
-  justifyContent: props.jc
+  (props) => ({
+    justifyContent: props.jc
   })
-)
+);
 
 const Column = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  flexWrap: 'wrap',
-})
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "wrap"
+});
 
 const Header = styled.header({
-  fontFamily: 'Arial',
+  fontFamily: "Arial",
   padding: 10,
   fontSize: 26,
-  background: '#007ed3',
-  color: 'white',
-})
+  background: "#007ed3",
+  color: "white"
+});
 
 const Button = styled.button(
-  props => ({
+  (props) => ({
     background: props.bg
   }),
   {
-    color: 'black',
-    '&:hover': {
-      color: 'white'
+    color: "black",
+    "&:hover": {
+      color: "white"
     }
   }
-)
+);
 
 const Input = styled.input({
   outline: 0,
   padding: 0.6,
-  border: '1px solid rgba(34, 36, 38, 0.15)',
+  border: "1px solid rgba(34, 36, 38, 0.15)",
   borderRadius: 3,
   minWidth: 180,
-  '&:hover,&:focus': {
-    borderColor: '#85b7d9'
-  },
-})
+  "&:hover,&:focus": {
+    borderColor: "#85b7d9"
+  }
+});
 
 const List = styled.li({
-  listStyleType: 'none',
-})
-
+  listStyleType: "none"
+});
 
 /**Code*/
 
@@ -120,101 +119,125 @@ function Todos() {
   const [text, setText] = React.useState("");
 
   React.useEffect(() => {
-    const parsedTodos = JSON.parse(localStorage.getItem("todos"))
-    console.log(typeof parsedTodos)
-    console.log(parsedTodos[0])
-    setTodos(parsedTodos)
-  }, [])
+    const parsedTodos = JSON.parse(localStorage.getItem("todos"));
+    setTodos(parsedTodos);
+  }, []);
 
-  React.useEffect( () => {
-    localStorage.setItem("todos", JSON.stringify(todos))
-  }, [todos])
+  React.useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
-
-  const onCreate = event => {
-    const trimmedText = text.split(" ").join("")
+  const onCreate = (event) => {
+    const trimmedText = text.split(" ").join("");
     if (trimmedText === "") {
       event.preventDefault();
-      return
+      return;
     }
 
-    setTodos(prevState => ([
+    setTodos((prevState) => [
       {
         id: uuidv4(),
         text: text,
         completed: false
       },
       ...prevState
-    ]
-    ));
-    setText("")
+    ]);
+    setText("");
     event.preventDefault();
   };
 
   const onRemove = (event, id) => {
     const theState = [...todos];
-    const theEntryIndex = theState.findIndex(x => x.id === id)
+    const theEntryIndex = theState.findIndex((x) => x.id === id);
 
-    theState.splice(theEntryIndex, 1)
-    setTodos(theState)
+    theState.splice(theEntryIndex, 1);
+    setTodos(theState);
     event.preventDefault();
-  }
+  };
 
-  const onChange = event => {
+  const onChange = (event) => {
     setText(event.target.value);
   };
 
   const onToggleComplete = (event) => {
     const theState = [...todos];
-    const theEntry = theState.find(x => x.id === event.target.id)
-    const theEntryIndex = theState.findIndex(x => x.id === event.target.id)
-    
-    theEntry.completed = !theEntry.completed
-    theState[theEntryIndex] = theEntry
-    setTodos(theState)
+    const theEntry = theState.find((x) => x.id === event.target.id);
+    const theEntryIndex = theState.findIndex((x) => x.id === event.target.id);
+
+    theEntry.completed = !theEntry.completed;
+    theState[theEntryIndex] = theEntry;
+    setTodos(theState);
   };
 
   return (
     <main>
       {/** Show your "Create todo" form here */}
-      <CreateTodo onCreate={onCreate} onChange={onChange} text={text}/>
+      <CreateTodo onCreate={onCreate} onChange={onChange} text={text} />
       <ul>
         {/** Ouput some todos here */}
-        {todos.map(todo => <Todo key={todo.id} id={todo.id} text={todo.text} completed={todo.completed} onToggleComplete={onToggleComplete} onRemove={onRemove}></Todo>)}
-        
+        {todos.map((todo) => (
+          <Todo
+            key={todo.id}
+            id={todo.id}
+            text={todo.text}
+            completed={todo.completed}
+            onToggleComplete={onToggleComplete}
+            onRemove={onRemove}
+          ></Todo>
+        ))}
       </ul>
     </main>
   );
 }
 
-function Todo({id, text, completed, onRemove, onToggleComplete }) {
-  return <List>
-          <Row jc='flex-end'>
-            <Column>
-              {text}
-            </Column>
-            <Column>
-              <Row jc='center'>
-                <input id={id} type="checkbox" checked={completed} onChange={onToggleComplete}/>
-                <Button type="button" onClick={(event)=>onRemove(event, id)} bg='#d9534f'>Remove</Button>
-              </Row>
-            </Column>
+function Todo({ id, text, completed, onRemove, onToggleComplete }) {
+  return (
+    <List>
+      <Row jc="flex-end">
+        <Column>{text}</Column>
+        <Column>
+          <Row jc="center">
+            <input
+              id={id}
+              type="checkbox"
+              checked={completed}
+              onChange={onToggleComplete}
+            />
+            <Button
+              type="button"
+              onClick={(event) => onRemove(event, id)}
+              bg="#d9534f"
+            >
+              Remove
+            </Button>
           </Row>
-        </List>;
+        </Column>
+      </Row>
+    </List>
+  );
 }
 
 function CreateTodo({ onCreate, onChange, text }) {
-  return <form onSubmit={onCreate}>
-    {/** Implement the form */}
-    
-    <Input type="text" value={text} onChange={onChange} placeholder="Create todo"/>
-    <Button type="submit" onSubmit={onCreate} bg='#5cb85c'>Add</Button>
-    </form>;
+  return (
+    <form onSubmit={onCreate}>
+      {/** Implement the form */}
+
+      <Input
+        type="text"
+        value={text}
+        onChange={onChange}
+        placeholder="Create todo"
+      />
+      <Button type="submit" onSubmit={onCreate} bg="#5cb85c">
+        Add
+      </Button>
+    </form>
+  );
 }
 
 export default function App() {
   return (
-    <Row jc='center'>
+    <Row jc="center">
       <Div>
         <Header>Todo List</Header>
         <Todos />
