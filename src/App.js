@@ -123,14 +123,15 @@ function Todos() {
   ]);
   const [text, setText] = React.useState("");
 
-  React.useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
+  
   React.useEffect(() => {
     const parsedTodos = JSON.parse(localStorage.getItem("todos"));
     setTodos(parsedTodos);
   }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const onCreate = (event) => {
     const trimmedText = text.split(" ").join("");
