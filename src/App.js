@@ -96,10 +96,10 @@ const List = styled.li({
   listStyleType: "none"
 });
 
-const Text = styled.text({
-  textDecorationLine: 'line-through',
-  opacity: '0.5'
-})
+const Text = styled.div({
+  textDecorationLine: "line-through",
+  opacity: "0.5"
+});
 
 /**Code*/
 
@@ -124,13 +124,13 @@ function Todos() {
   const [text, setText] = React.useState("");
 
   React.useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  React.useEffect(() => {
     const parsedTodos = JSON.parse(localStorage.getItem("todos"));
     setTodos(parsedTodos);
   }, []);
-
-  React.useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
 
   const onCreate = (event) => {
     const trimmedText = text.split(" ").join("");
@@ -196,22 +196,16 @@ function Todos() {
 }
 
 function Todo({ id, text, completed, onRemove, onToggleComplete }) {
-  
   return (
     <List>
       <Row jc="flex-end">
-        {
-          completed && 
+        {completed && (
           <Column>
-            <Text>
-              {text}
-            </Text>
+            <Text>{text}</Text>
           </Column>
-        }
-        {
-          !completed && <Column>{text}</Column>
-        }
-        
+        )}
+        {!completed && <Column>{text}</Column>}
+
         <Column>
           <Row jc="center">
             <input
@@ -233,7 +227,6 @@ function Todo({ id, text, completed, onRemove, onToggleComplete }) {
     </List>
   );
 }
-
 
 function CreateTodo({ onCreate, onChange, text }) {
   return (
