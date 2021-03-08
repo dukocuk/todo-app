@@ -125,9 +125,13 @@ function Todos() {
 
   
   React.useEffect(() => {
-    const parsedTodos = JSON.parse(localStorage.getItem("todos"));
+    let parsedTodos = JSON.parse(localStorage.getItem("todos"));
+    if (parsedTodos === null) {
+      localStorage.setItem("todos", JSON.stringify(todos));
+      return
+    }
     setTodos(parsedTodos);
-  }, []);
+  },[]);
 
   React.useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
