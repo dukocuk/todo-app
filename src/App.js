@@ -96,6 +96,11 @@ const List = styled.li({
   listStyleType: "none"
 });
 
+const Text = styled.text({
+  textDecorationLine: 'line-through',
+  opacity: '0.5'
+})
+
 /**Code*/
 
 function Todos() {
@@ -191,10 +196,22 @@ function Todos() {
 }
 
 function Todo({ id, text, completed, onRemove, onToggleComplete }) {
+  
   return (
     <List>
       <Row jc="flex-end">
-        <Column>{text}</Column>
+        {
+          completed && 
+          <Column>
+            <Text>
+              {text}
+            </Text>
+          </Column>
+        }
+        {
+          !completed && <Column>{text}</Column>
+        }
+        
         <Column>
           <Row jc="center">
             <input
@@ -216,6 +233,7 @@ function Todo({ id, text, completed, onRemove, onToggleComplete }) {
     </List>
   );
 }
+
 
 function CreateTodo({ onCreate, onChange, text }) {
   return (
